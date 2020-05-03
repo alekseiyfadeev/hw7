@@ -5,8 +5,11 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class HW7Test {
     private static WebDriver driver;
@@ -21,6 +24,7 @@ public class HW7Test {
     @Before
     public void beforeTest() {
         driver = new ChromeDriver();
+        driver.manage().window().maximize();
         logger.info(driver.toString() + " started");
     }
 
@@ -37,8 +41,20 @@ public class HW7Test {
     }
 
     @Test
-    public void openOtusSite() {
-        driver.get("https://otus.ru");
-        logger.info("OTUS site is opened");
+    public void Task() {
+        WebDriverWait wait = new WebDriverWait(driver,10);
+        By selector;
+
+        driver.get("https://market.yandex.ru/");
+
+        selector = By.xpath("//div[contains(@class,'popup2__content')]");
+        wait.until(ExpectedConditions.visibilityOfElementLocated(selector));
+        wait.until(ExpectedConditions.not(ExpectedConditions.visibilityOfElementLocated(selector)));
+
+        selector = By.xpath("//a[contains(@href,'catalog--elektronika')]");
+        wait.until(ExpectedConditions.elementToBeClickable(selector)).click();
+
+        selector = By.xpath("//a[contains(@href,'catalog--mobilnye-telefony')]");
+        wait.until(ExpectedConditions.elementToBeClickable(selector)).click();
     }
 }
